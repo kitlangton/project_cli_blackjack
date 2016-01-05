@@ -2,8 +2,12 @@
 # Suit
 # Rank
 
+require "highline"
+
 SUITS = %W{ C D H S }
 RANKS = %W{ A 2 3 4 5 6 7 8 9 T J Q K}
+
+CLI = HighLine.new
 
 class Card
 	CARD_VALUES = {
@@ -112,19 +116,31 @@ class Deal
 		house_hand.status = "Live"
 	end
 
-	def deal
-		player_hand.add_card(deck.draw)
-		house_hand.add_card(deck.draw)
-	end
+	# def deal
+	# 	player_hand.add_card(deck.draw)
+	# 	house_hand.add_card(deck.draw)
+	# end
 
 	def play_player_hand
 		while player_hand.status == "Live"
-			get_player_move
+			player_action = get_player_move
+			self.send player_action, player_hand
 		end
 	end
 
 	def get_player_move
-		
+		loop do
+			input = CLI.ask "hit or stand?"
+			case input.downcase
+			when /hit/
+				return :hit
+			when /stand/
+				return :stand
+			else
+				"need answer"
+				next
+			end
+		end
 	end
 
 	def play_house_hand
@@ -139,13 +155,16 @@ class Deal
 
 	def hit(hand)
 		hand.add_card(deck.draw)
+		puts "has been called"
+		puts hand
 
-		if house_hand.value > 21
-			house_hand.status = "Bust"
+		if hand.hand_value > 21
+			hand.status = "Bust"
 		end
 	end
 
-	def stand
+	def stand (hand)
+		hand.status = "Pat"
 	end
 
 	def double_down
@@ -165,7 +184,11 @@ class Deal
 end
 
 deal = Deal.new
-deal.deal
+deal.initial_deal
+deal.display
+deal.play_player_hand
+
+
 
 deal.display
 
