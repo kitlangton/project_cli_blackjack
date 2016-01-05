@@ -11,7 +11,6 @@ Hand	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^class H
 add_card	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def add_card(card)$/;"	f	class:Hand
 build	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def self.build$/;"	F	class:Deck
 card_value	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def card_value$/;"	f	class:Card
-deal	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def deal$/;"	f	class:Deal
 display	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def display$/;"	f	class:Deal
 double_down	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def double_down$/;"	f	class:Deal
 draw	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def draw$/;"	f	class:Deck
@@ -28,6 +27,6 @@ play_house_hand	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.r
 play_player_hand	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def play_player_hand$/;"	f	class:Deal
 shuffle	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def shuffle$/;"	f	class:Deck
 split_pair	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def split_pair$/;"	f	class:Deal
-stand	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def stand$/;"	f	class:Deal
+stand	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def stand (hand)$/;"	f	class:Deal
 to_s	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def to_s$/;"	f	class:Card
 to_s	/Users/kitlangton/Viking/Unit3/project_cli_blackjack/blackjack.rb	/^	def to_s$/;"	f	class:Hand

@@ -11,7 +11,7 @@ CLI = HighLine.new
 
 class Card
 	CARD_VALUES = {
-		'A' => 11,
+		'A' => 1,
 		'2' => 2,
 		'3' => 3,
 		'4' => 4,
@@ -40,6 +40,15 @@ class Card
 	def card_value
 		CARD_VALUES[rank]
 	end
+
+
+
+
+
+
+
+
+
 
 	def inspect
 		"#{rank}#{suit}"
@@ -75,6 +84,7 @@ class Deck
 end
 
 class Hand
+	include Comparable
 	HAND_STATUS = %W{ Bust Live Pat }
 
 	attr_accessor :cards, :status
@@ -88,16 +98,38 @@ class Hand
 		@cards << card
 	end
 
-	def to_s
-		@cards.to_s
+	def display
+		puts "Cards: #{cards}"
+		puts "Value: #{hand_value}"
 	end
 
 	def hand_value
-		@cards.inject(0) { |sum, card| sum += card.card_value}
+		total = 0
+		@cards.each do |card| 
+			total += card.card_value
+		end
+
+		number_of_aces.times do
+			if total <= 11
+				total += 10
+			end
+		end
+
+		total
+	end
+
+	def number_of_aces
+		@cards.select { |card| card.rank == "A"}.count
+	end
+
+	def <=>(other_hand)
+		hand_value <=> other_hand.hand_value
 	end
 end
 
 class Deal
+	GAME_RESULTS = [ "Player Wins", "House Wins", "Push" ]
+
 	attr_accessor :player_hand, :house_hand, :deck
 
 	def initialize
@@ -116,15 +148,42 @@ class Deal
 		house_hand.status = "Live"
 	end
 
-	# def deal
-	# 	player_hand.add_card(deck.draw)
-	# 	house_hand.add_card(deck.draw)
-	# end
+	def game_cycle
+		initial_deal
+		display
+		play_player_hand
+
+		play_house_hand if player_hand.status != "Bust"
+		puts check_for_winner
+	end
+
+	def check_for_winner
+		@result = "No Winner"
+		if game_over
+			if player_hand > house_hand
+				@result = "Player Wins"
+			elsif house_hand > player_hand
+				@result = "House Wins"
+			elsif house_hand == player_hand
+				@result = "Push"
+			end
+		else
+			@result = "House Wins" if player_hand.status == "Bust"
+			@result = "Player Wins" if house_hand.status == "Bust"
+		end
+		@result
+	end
+
+	def game_over
+		player_hand.status == "Pat" && house_hand.status == "Pat"
+	end
 
 	def play_player_hand
 		while player_hand.status == "Live"
 			player_action = get_player_move
 			self.send player_action, player_hand
+			puts "You #{player_action.to_s} and your hand is:"
+			puts player_hand.display
 		end
 	end
 
@@ -144,19 +203,19 @@ class Deal
 	end
 
 	def play_house_hand
-		while @house_hand.value < 17
+		while @house_hand.hand_value < 17
 			hit(house_hand)
+			puts "The house hits!"
+			puts house_hand.display
 		end
 
-		if house_hand.value <= 21
+		if house_hand.hand_value <= 21
 			house_hand.status = "Pat"
 		end
 	end
 
 	def hit(hand)
 		hand.add_card(deck.draw)
-		puts "has been called"
-		puts hand
 
 		if hand.hand_value > 21
 			hand.status = "Bust"
@@ -176,21 +235,10 @@ class Deal
 	def display
 		puts "Player Hand:"
 		puts @player_hand.display
-		puts @player_hand.hand_value
 		puts "House Hand:"
 		puts @house_hand.display
-		puts @house_hand.hand_value
 	end
 end
 
 deal = Deal.new
-deal.initial_deal
-deal.display
-deal.play_player_hand
-
-
-
-deal.display
-
-
-
+deal.game_cycle
