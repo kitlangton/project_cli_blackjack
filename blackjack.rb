@@ -103,6 +103,14 @@ class Hand
 		puts "Value: #{hand_value}"
 	end
 
+	def soft_seventeen? 
+		total = 0
+		@cards.each do |card| 
+			total += card.card_value
+		end
+		total == 7 && number_of_aces >= 1
+	end
+
 	def hand_value
 		total = 0
 		@cards.each do |card| 
@@ -203,7 +211,7 @@ class Deal
 	end
 
 	def play_house_hand
-		while @house_hand.hand_value < 17
+		while @house_hand.hand_value < 17 || house_hand.soft_seventeen?
 			hit(house_hand)
 			puts "The house hits!"
 			puts house_hand.display
