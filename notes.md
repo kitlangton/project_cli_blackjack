@@ -7,4 +7,3 @@
 	Hand
 	Card
 
-# Rules / Procedure

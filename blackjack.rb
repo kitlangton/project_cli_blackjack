@@ -41,15 +41,6 @@ class Card
 		CARD_VALUES[rank]
 	end
 
-
-
-
-
-
-
-
-
-
 	def inspect
 		"#{rank}#{suit}"
 	end
